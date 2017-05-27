@@ -3,9 +3,8 @@ var pattern = {
     email: /^\w+@[A-z0-9][A-z0-9\-]*[A-z0-9]*(\.[A-z]{1,10}){1,2}$/
 }
 
-var validate = function(options){
-    // var rules = options.rules || {};
-    var rules = {
+var v = {
+    rules: {
         'username': {
             required: true,
             minlength: 2,
@@ -18,9 +17,10 @@ var validate = function(options){
 
         }
     }
+}
 
-
-    $.each(rules, function(rule){
+var validate = function(){
+    $.each(v.rules, function(rule){
         var obj;
         if( /^[#\.]/.test(rule) ){
             obj = $(rule);
@@ -28,13 +28,16 @@ var validate = function(options){
         else obj = $('[name=' + rule + ']');
 
         obj.each(function(){
-            $(this).data('rules', rules);
-            $(this).data('rule', rule)
-            // $(this).valid();
+            $(this).data('rules', v.rules);
+            $(this).data('rule', rule);
+            $(this).blur(function(){
+                $(this).valid();
+            });
         });
 
     })
 }
+
 
 
 var valid = function(){
